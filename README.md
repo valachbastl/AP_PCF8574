@@ -5,6 +5,8 @@ PCF8574/PCF8574A I2C 8-bit I/O expander driver for ESP-IDF.
 ## Features
 
 - Uses ESP-IDF `i2c_master` API (new driver, not legacy)
+- Pin direction configuration (input/output) with mask or per-pin
+- Input pins automatically held HIGH during write operations
 - Read/write individual pins or all 8 pins at once
 - Cached state for read without I2C communication
 - Read-modify-write for single pin operations
@@ -25,7 +27,7 @@ Or with specific version:
 
 ```ini
 lib_deps =
-    https://github.com/valachbastl/AP_PCF8574.git#v1.0.0
+    https://github.com/valachbastl/AP_PCF8574.git#v1.1.0
 ```
 
 ## Usage
@@ -41,6 +43,18 @@ i2c_master_bus_handle_t i2c_bus;
 // ... i2c_new_master_bus(&bus_config, &i2c_bus);
 
 AP_PCF8574 pcf(i2c_bus, 0x20);  // address 0x20 (A0-A2 = GND)
+```
+
+### Pin Direction
+
+```cpp
+// Set pin direction by mask (1=input, 0=output)
+// Default is 0xFF (all inputs)
+pcf.setPinMode(0b00000111);  // P0-P2 input, P3-P7 output
+
+// Set single pin direction
+pcf.setPinMode(3, false);  // P3 as output
+pcf.setPinMode(0, true);   // P0 as input
 ```
 
 ### Reading Inputs
@@ -61,9 +75,11 @@ bool pin3_cached = pcf.readPin(3, true);
 
 ```cpp
 // Write all 8 pins at once
-pcf.writeAll(0xFF);  // all HIGH
+// Input pins are automatically kept HIGH
+pcf.writeAll(0xFF);
 
 // Write single pin (read-modify-write)
+// Input pins are automatically kept HIGH
 pcf.writePin(4, false);  // set pin 4 LOW
 pcf.writePin(5, true);   // set pin 5 HIGH
 ```
@@ -92,9 +108,11 @@ if (pcf_int_fired) {
 | Method | Description |
 |--------|-------------|
 | `AP_PCF8574(bus, address)` | Constructor - adds device to I2C bus |
+| `setPinMode(mask)` | Set pin direction by mask (1=input, 0=output) |
+| `setPinMode(pin, input)` | Set single pin direction |
 | `readAll()` | Read all 8 pins, returns uint8_t |
 | `readPin(pin, fromCache)` | Read single pin (0-7), fromCache default false |
-| `writeAll(value)` | Write all 8 pins |
+| `writeAll(value)` | Write all 8 pins (input pins kept HIGH) |
 | `writePin(pin, state)` | Write single pin with read-modify-write |
 | `getCache()` | Get last read/written state without I2C |
 

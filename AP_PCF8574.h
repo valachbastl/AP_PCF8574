@@ -14,6 +14,22 @@ public:
     AP_PCF8574(i2c_master_bus_handle_t bus, uint8_t address);
 
     /**
+     * @brief Nastavi smer pinu maskou (1=input, 0=output)
+     *        Vstupni piny se pri kazdem write automaticky drzi na HIGH
+     *        aby fungovaly jako quasi-bidirectional vstupy.
+     *        Vychozi: 0xFF (vsechny input)
+     * @param mask bitova maska smeru pinu
+     */
+    void setPinMode(uint8_t mask);
+
+    /**
+     * @brief Nastavi smer jednoho pinu
+     * @param pin Cislo pinu (0-7)
+     * @param input true = input, false = output
+     */
+    void setPinMode(uint8_t pin, bool input);
+
+    /**
      * @brief Precte vsech 8 pinu najednou
      * @return 8bit hodnota portu
      */
@@ -29,6 +45,7 @@ public:
 
     /**
      * @brief Zapise vsech 8 pinu najednou
+     *        Vstupni piny (dle masky) se automaticky nastavi na HIGH.
      * @param value 8bit hodnota portu
      */
     void writeAll(uint8_t value);
@@ -49,4 +66,5 @@ public:
 private:
     i2c_master_dev_handle_t _dev;
     uint8_t _data;
+    uint8_t _inputMask;  // 1=input, 0=output
 };
