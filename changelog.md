@@ -1,5 +1,10 @@
 # Changelog
 
+## [1.2.1] - 2026-02-20
+
+### Changed
+- `writePin()` vraci `bool` - true pokud byl zapis proveden, false pokud byl preskocen
+
 ## [1.2.0] - 2026-02-20
 
 ### Changed

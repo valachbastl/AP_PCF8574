@@ -27,7 +27,7 @@ Or with specific version:
 
 ```ini
 lib_deps =
-    https://github.com/valachbastl/AP_PCF8574.git#v1.2.0
+    https://github.com/valachbastl/AP_PCF8574.git#v1.2.1
 ```
 
 ## Usage
@@ -113,7 +113,7 @@ if (pcf_int_fired) {
 | `readAll()` | Read all 8 pins, returns uint8_t |
 | `readPin(pin, fromCache)` | Read single pin (0-7), fromCache default false |
 | `writeAll(value)` | Write all 8 pins (input pins kept HIGH) |
-| `writePin(pin, state)` | Write single pin with read-modify-write |
+| `writePin(pin, state)` | Write single pin, returns true if write was performed |
 | `getCache()` | Get last read/written state without I2C |
 
 ## Author

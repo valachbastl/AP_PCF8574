@@ -52,10 +52,12 @@ public:
 
     /**
      * @brief Zapise stav jednoho pinu
+     *        Pokud se stav oproti cache nezmenil, preskoci I2C transakce.
      * @param pin Cislo pinu (0-7)
      * @param state true = HIGH, false = LOW
+     * @return true pokud byl zapis proveden, false pokud byl preskocen (stav se nezmenil)
      */
-    void writePin(uint8_t pin, bool state);
+    bool writePin(uint8_t pin, bool state);
 
     /**
      * @brief Vrati posledni nacteny/zapsany stav portu (bez I2C komunikace)

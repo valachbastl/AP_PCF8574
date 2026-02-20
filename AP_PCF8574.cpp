@@ -47,10 +47,10 @@ void AP_PCF8574::writeAll(uint8_t value)
     i2c_master_transmit(_dev, &_data, 1, 100);
 }
 
-void AP_PCF8574::writePin(uint8_t pin, bool state)
+bool AP_PCF8574::writePin(uint8_t pin, bool state)
 {
     bool current = (_data >> pin) & 0x01;
-    if (current == state) return;
+    if (current == state) return false;
     readAll();
     if (state) {
         _data |= (1 << pin);
@@ -59,6 +59,7 @@ void AP_PCF8574::writePin(uint8_t pin, bool state)
     }
     _data |= _inputMask;  // input pins always HIGH
     i2c_master_transmit(_dev, &_data, 1, 100);
+    return true;
 }
 
 uint8_t AP_PCF8574::getCache()
