@@ -49,6 +49,8 @@ void AP_PCF8574::writeAll(uint8_t value)
 
 void AP_PCF8574::writePin(uint8_t pin, bool state)
 {
+    bool current = (_data >> pin) & 0x01;
+    if (current == state) return;
     readAll();
     if (state) {
         _data |= (1 << pin);

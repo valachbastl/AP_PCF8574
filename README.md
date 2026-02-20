@@ -9,7 +9,7 @@ PCF8574/PCF8574A I2C 8-bit I/O expander driver for ESP-IDF.
 - Input pins automatically held HIGH during write operations
 - Read/write individual pins or all 8 pins at once
 - Cached state for read without I2C communication
-- Read-modify-write for single pin operations
+- Read-modify-write for single pin operations, skips I2C if state unchanged
 - Supports PCF8574 (0x20-0x27) and PCF8574A (0x38-0x3F)
 
 ## Installation
@@ -27,7 +27,7 @@ Or with specific version:
 
 ```ini
 lib_deps =
-    https://github.com/valachbastl/AP_PCF8574.git#v1.1.0
+    https://github.com/valachbastl/AP_PCF8574.git#v1.2.0
 ```
 
 ## Usage

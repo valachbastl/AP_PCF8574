@@ -1,5 +1,10 @@
 # Changelog
 
+## [1.2.0] - 2026-02-20
+
+### Changed
+- `writePin()` preskoci I2C transakce pokud se stav pinu nezmenil (porovnani s cache pred readAll)
+
 ## [1.1.0] - 2026-02-18
 
 ### Added
