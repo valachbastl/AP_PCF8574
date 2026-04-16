@@ -5,11 +5,15 @@ PCF8574/PCF8574A I2C 8-bit I/O expander driver for ESP-IDF.
 ## Features
 
 - Uses ESP-IDF `i2c_master` API (new driver, not legacy)
+- Thread-safe — FreeRTOS mutex, safe to use from multiple tasks
+- Retry logic — 3 attempts with 2ms delay on I2C error
 - Pin direction configuration (input/output) with mask or per-pin
 - Input pins automatically held HIGH during write operations
 - Read/write individual pins or all 8 pins at once
 - Cached state for read without I2C communication
 - Read-modify-write for single pin operations, skips I2C if state unchanged
+- `isOnline()` for runtime device availability check
+- Configurable SCL speed
 - Supports PCF8574 (0x20-0x27) and PCF8574A (0x38-0x3F)
 
 ## Installation
@@ -27,7 +31,7 @@ Or with specific version:
 
 ```ini
 lib_deps =
-    https://github.com/valachbastl/AP_PCF8574.git#v1.2.1
+    https://github.com/valachbastl/AP_PCF8574.git#v1.3.0
 ```
 
 ## Usage
@@ -84,6 +88,15 @@ pcf.writePin(4, false);  // set pin 4 LOW
 pcf.writePin(5, true);   // set pin 5 HIGH
 ```
 
+### Device Availability Check
+
+```cpp
+if (!pcf.isOnline()) {
+    ESP_LOGE(TAG, "PCF8574 nereaguje!");
+    // error handling...
+}
+```
+
 ### Using with INT Pin
 
 ```cpp
@@ -107,7 +120,7 @@ if (pcf_int_fired) {
 
 | Method | Description |
 |--------|-------------|
-| `AP_PCF8574(bus, address)` | Constructor - adds device to I2C bus |
+| `AP_PCF8574(bus, address, scl_hz)` | Constructor - adds device to I2C bus, scl_hz optional (default 100 kHz) |
 | `setPinMode(mask)` | Set pin direction by mask (1=input, 0=output) |
 | `setPinMode(pin, input)` | Set single pin direction |
 | `readAll()` | Read all 8 pins, returns uint8_t |
@@ -115,6 +128,7 @@ if (pcf_int_fired) {
 | `writeAll(value)` | Write all 8 pins (input pins kept HIGH) |
 | `writePin(pin, state)` | Write single pin, returns true if write was performed |
 | `getCache()` | Get last read/written state without I2C |
+| `isOnline()` | Returns true if device responds on I2C bus |
 
 ## Author
 

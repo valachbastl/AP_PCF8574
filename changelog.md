@@ -1,5 +1,22 @@
 # Changelog
 
+## [1.3.0] - 2026-04-16
+
+### Added
+- Thread-safe — FreeRTOS mutex chrání všechny I2C operace
+- Retry logika — 3 pokusy s 2ms pauzou při I2C chybě, každý neúspěch zalogován
+- `isOnline()` — probe dostupnosti zařízení bez změny cache
+- Volitelný parametr `scl_hz` v konstruktoru (výchozí 100 kHz)
+- Destruktor — uvolní `_dev` handle a mutex
+- Kopírování zakázáno (`= delete`) — prevence sdílení handles
+- Inicializační zápis v konstruktoru — čip je od startu ve známém stavu
+- Validace čísla pinu (0–7) s logováním chyby
+- Log tag obsahuje adresu zařízení (`PCF8574@0x20`) pro snadnou identifikaci
+
+### Fixed
+- `writePin()` — odstraněn zbytečný `readAll()` před zápisem (extra I2C transakce,
+  při chybě čtení přepisoval `_data` nulami a mohl shodit ostatní výstupní piny)
+
 ## [1.2.1] - 2026-02-20
 
 ### Changed
