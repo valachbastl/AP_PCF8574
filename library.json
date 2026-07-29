@@ -1,7 +1,7 @@
 {
     "name": "AP_PCF8574",
-    "version": "1.3.0",
-    "releaseDate": "2026-04-16",
+    "version": "1.4.0",
+    "releaseDate": "2026-07-29",
     "description": "PCF8574/PCF8574A I2C 8-bit I/O expander driver for ESP-IDF (thread-safe, retry logic)",
     "keywords": ["pcf8574", "i2c", "io-expander", "esp-idf", "esp32"],
     "authors": [
@@ -9,7 +9,11 @@
             "name": "Petr Adámek"
         }
     ],
-    "license": "UNLICENSED",
+    "license": "MIT",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/valachbastl/AP_PCF8574.git"
+    },
     "frameworks": ["espidf"],
     "platforms": ["espressif32"]
 }

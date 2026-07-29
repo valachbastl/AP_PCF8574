@@ -1,0 +1,4 @@
+version: "1.4.0"
+description: "PCF8574/PCF8574A I2C 8-bit I/O expander driver for ESP-IDF (thread-safe, retry logic)"
+dependencies:
+  idf: ">=5.0.0"
